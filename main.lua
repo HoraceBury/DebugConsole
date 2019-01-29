@@ -1,0 +1,6 @@
+local debugconsole = require("debugconsole")
+debugconsole.enableDebugPrint()
+debugconsole.setBackgroundColor( .94, .94, 1 )
+debugconsole.setFontSize( 24 )
+debugconsole.setConsoleWidth( display.actualContentWidth*2 )
+debugconsole.enableDebugPrintConsole()
