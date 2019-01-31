@@ -13,6 +13,7 @@ local debugConsoleGroup = nil
 local debugPrintList = {}
 local consoleBufferLength = 100
 local consoleWidth = display.contentWidth
+local consoleHeight = display.contentHeight
 local fontSize = 32
 local r, g, b = 1, 1, 1
 
@@ -63,12 +64,12 @@ local function showDebugConsole()
 	debugConsoleGroup = group
 	
 	local scrollview = widget.newScrollView{
-		top = 0,
-		left = 0,
-		width = display.actualContentWidth,
-		height = display.actualContentHeight,
-		scrollWidth = display.actualContentWidth,
-		scrollHeight = display.actualContentHeight,
+		x = display.contentCenterX,
+		y = display.contentCenterY,
+		width = consoleWidth,
+		height = consoleHeight,
+		scrollWidth = consoleWidth,
+		scrollHeight = consoleHeight,
 		backgroundColor = {r,g,b},
 		hideBackground = false,
 	}
@@ -86,7 +87,7 @@ local function showDebugConsole()
 	if (y > display.actualContentHeight) then
 		scrollview:setScrollHeight( y )
 		local view = scrollview:getView()
-		scrollview:scrollToPosition{ y=display.actualContentHeight-y, time=0 }
+		scrollview:scrollToPosition{ y=consoleHeight-y, time=0 }
 	end
 	
 	return group
@@ -100,10 +101,19 @@ end
 local function setConsoleWidth( width )
 	width = tonumber(width)
 	width = width or display.contentWidth
-	if (width < display.contentWidth) then
-		width = display.contentWidth
+	if (width > display.actualContentWidth) then
+		width = display.actualContentWidth
 	end
 	consoleWidth = width
+end
+
+local function setConsoleHeight( height )
+	height = tonumber(height)
+	height = height or display.contentHeight
+	if (height > display.actualContentHeight) then
+		height = display.actualContentHeight
+	end
+	consoleHeight = height
 end
 
 local function shake( event )
@@ -131,6 +141,7 @@ lib.disableDebugPrintConsole = disableDebugPrintConsole
 lib.enableDebugPrint = enableDebugPrint
 lib.disableDebugPrint = disableDebugPrint
 lib.setConsoleWidth = setConsoleWidth
+lib.setConsoleHeight = setConsoleHeight
 lib.showDebugConsole = showDebugConsole
 lib.hideDebugConsole = hideDebugConsole
 lib.setBufferLength = setBufferLength
